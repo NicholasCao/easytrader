@@ -192,7 +192,7 @@ class BaseFollower(metaclass=abc.ABCMeta):
                     "strategy": strategy,
                     "strategy_name": name,
                     "action": transaction["action"],
-                    "stock_code": transaction["stock_code"],
+                    "stock_code": transaction["stock_code"].replace('sz', '').replace('sh', ''),
                     "amount": transaction["amount"],
                     "price": float(transaction["price"]),
                     "datetime": transaction["datetime"],
