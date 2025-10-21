@@ -308,12 +308,23 @@ class BaseFollower(metaclass=abc.ABCMeta):
             actual_price = self._calculate_price_by_slippage(
                 trade_cmd["action"], trade_cmd["price"]
             )
-            args = {
-                "security": trade_cmd["stock_code"],
-                "price": actual_price,
-                "amount": trade_cmd["amount"],
-                "entrust_prop": entrust_prop,
-            }
+            if entrust_prop == 'limit':
+                args = {
+                    "security": trade_cmd["stock_code"],
+                    "price": actual_price,
+                    "amount": trade_cmd["amount"],
+                    # "entrust_prop": entrust_prop,
+                }
+            elif entrust_prop == 'market':
+                args = {
+                    "security": trade_cmd["stock_code"],
+                    "amount": trade_cmd["amount"]
+                }
+                if trade_cmd["action"] == "buy":
+                    trade_cmd["action"] = "market_buy"
+                elif trade_cmd["action"] == "sell":
+                    trade_cmd["action"] = "market_sell"
+            
             try:
                 response = getattr(user, trade_cmd["action"])(**args)
             except exceptions.TradeError as e:
