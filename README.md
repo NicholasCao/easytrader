@@ -1,38 +1,31 @@
 # easytrader
 
-[![Package](https://img.shields.io/pypi/v/easytrader.svg)](https://pypi.python.org/pypi/easytrader)
-[![License](https://img.shields.io/github/license/shidenggui/easytrader.svg)](https://github.com/shidenggui/easytrader/blob/master/LICENSE)
+修复聚宽跟单bug，增加了市价跟单的功能。
 
-* 进行股票量化交易
-* 通用的同花顺客户端模拟操作
-* 支持券商的 [miniqmt](https://easytrader.readthedocs.io/zh-cn/master/miniqmt/) 官方量化接口
-* 支持雪球组合调仓和跟踪
-* 支持远程操作客户端
-* 支持跟踪 `joinquant`, `ricequant` 的模拟交易
+## DEMO
+```python
+# https://easytrader.readthedocs.io/zh-cn/master/miniqmt/
+import easytrader
 
+user = easytrader.use('miniqmt')
 
-### 微信群以及公众号
+user.connect(
+    miniqmt_path=r"D:\Apps\国金证券QMT交易端\userdata_mini",  # QMT 客户端下的 miniqmt 安装路径
+    stock_account="8886663115"  # 资金账号
+)
 
-欢迎大家扫码关注公众号「食灯鬼」，一起交流。进群可通过菜单加我好友，备注量化。
+print(user.balance)
+# user.buy('600036', price=35.5, amount=10)
 
-![公众号二维码](https://camo.githubusercontent.com/6fad032c27b30b68a9d942ae77f8cc73933b95cea58e684657d31b94a300afd5/68747470733a2f2f67697465652e636f6d2f73686964656e676775692f6173736574732f7261772f6d61737465722f755069632f6d702d71722e706e67)
+target = 'jq'  # joinquant
+follower = easytrader.follower(target)
+follower.login(user='***', password='***')
 
-若二维码因 Github 网络无法打开，请点击[公众号二维码](https://camo.githubusercontent.com/6fad032c27b30b68a9d942ae77f8cc73933b95cea58e684657d31b94a300afd5/68747470733a2f2f67697465652e636f6d2f73686964656e676775692f6173736574732f7261772f6d61737465722f755069632f6d702d71722e706e67)直接打开图片。
-
-### Author
-
-> Blog [@shidenggui](https://shidenggui.com) · Weibo [@食灯鬼](https://www.weibo.com/u/1651274491) · Twitter [@shidenggui](https://twitter.com/shidenggui)
-
-### 相关
-
-* [easyquotation 实时获取全市场股票行情](https://github.com/shidenggui/easyquotation)
-* [easyquant 简单的量化框架](https://github.com/shidenggui/easyqutant)
-
-
-### 模拟交易
-
-* 雪球组合 by @[haogefeifei](https://github.com/haogefeifei)（[说明](doc/xueqiu.md)）
-
-### 使用文档
-
-[中文文档](https://easytrader.readthedocs.io/)
+follower.follow(
+    user,
+    'https://www.joinquant.com/algorithm/live/index?backtestId=77e0841a70907de32161e3311f62dc88', # 聚宽模拟盘url
+    # trade_cmd_expire_seconds=100000000000, # 默认处理多少秒内的信号，用于调试
+    # cmd_cache=False, # 是否读取已经执行过的命令缓存，以防止重复执行，用于调试
+    entrust_prop="market" # market市价单, limit限价单
+)
+```
