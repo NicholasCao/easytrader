@@ -11,7 +11,7 @@ user = easytrader.use('miniqmt')
 
 user.connect(
     miniqmt_path=r"D:\Apps\国金证券QMT交易端\userdata_mini",  # QMT 客户端下的 miniqmt 安装路径
-    stock_account="8886663115"  # 资金账号
+    stock_account="xxx"  # 资金账号
 )
 
 print(user.balance)
@@ -23,7 +23,7 @@ follower.login(user='***', password='***')
 
 follower.follow(
     user,
-    'https://www.joinquant.com/algorithm/live/index?backtestId=77e0841a70907de32161e3311f62dc88', # 聚宽模拟盘url
+    'https://www.joinquant.com/algorithm/live/index?backtestId=xxx', # 聚宽模拟盘url
     # trade_cmd_expire_seconds=100000000000, # 默认处理多少秒内的信号，用于调试
     # cmd_cache=False, # 是否读取已经执行过的命令缓存，以防止重复执行，用于调试
     entrust_prop="market" # market市价单, limit限价单
